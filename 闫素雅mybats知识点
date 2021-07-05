@@ -1,0 +1,105 @@
+3.MyBatis 的前身是 iBatis，iBatis是 Apache 软件基金会下的一个开源项目。
+2010 年该项目从Apache 基金会迁出，并改名为MyBatis。同期，iBatis停止维护。 MyBatis是一种半自动化的Java持久层框架，其通过注解或XML 的方式将对象和SQL 关联起来。之所以说它是半自动的，是因为和Hibernate 等一些可自动生成SQL的ORM框架相比，使用MyBatis需要用户自行维护SQL，维护SQL 的工作比较繁琐，但也有好处。比如我们可控制SQL逻辑，可对其进行优化，以提高效率。
+
+MyBatis学习过程中的主要知识点。
+
+1.mybatis环境的搭建，通过maven可以快速的进行环境的搭建。
+ View Code
+2.mybatis核心配置文件
+mybatis的核心配置文件，位置与名称都不固定。
+
+需要注意的是mybatis的核心配置文件的标签是有顺序的，如果顺序不对，会产生错误提示，可根据具体提示进行标签位置的调整。
+
+mybatis核心配置文件主要配置如下：
+
+ View Code
+3.关于sql映射文件
+由于我们采用mapper接口式的编程，所以sql映射文件与mapper接口类的名称要相同，并且sql映射文件中namespace的值为对应mapper接口的全类名形式。
+
+4.关于mybatis中的参数处理
+对于mapper接口中单个参数，mybatis不会做特殊处理。可以通过#{参数名}进行取值操作。
+
+对于mapper接口中的多个参数，mybatis会做特殊处理。多个参数会被mybatis封装成一个map，#{}就是从map中进行取值。
+
+key的形式为：param1、param2......paramN的形式。
+
+value：就是说要传入的值。
+
+但是这种方式的可读性极差，因此可以采用命名参数的形式，通过@Param注解明确指定map中的key值。
+
+如果多个参数正好是业务逻辑的数据模型，则可直接传入POJO，通过#{属性名}进行取值。
+
+特别注意，如果参数为Collection（List，Set）类型或者是数组，mybatis也会特殊处理，mybatis也会把list或者数组封装在map中。
+
+如果参数为Collection则map中的key为Collection（collection）。
+
+如果参数为List，则map中的key可以直接使用list。
+
+如果参数为数组，则map中的key为array。
+
+5.关于mybatis的返回值和实体类字段与数据库字段不一致的问题
+当mapper接口中某函数的返回值类型为List时，在其对应sql语句的resultType上直接写List集合的中元素的类型即可。
+
+使用resultMap（自定义结果集映射规则），解决数据库字段和实体类属性不一致的情况。注意：resultMap和resultType只能二选一。
+
+6.mybatis中的缓存机制
+mybatis中默认定义了两级缓存，默认情况下一级缓存（本地缓存）开启。
+
+一级缓存：在与数据库同一次会话期间的数据会放到一级缓存中，以后如果需要查询相同的数据，直接从缓存中取，不需要到数据中进行查询。
+
+注意：一级缓存为sqlSession级别的缓存，一直都是开启的，不能关闭。
+
+一级缓存失效的四种情况：
+
+1）sqlSession不同，缓存失效。
+
+2）sqlSession相同，查询条件不同，缓存失效，因为缓存中可能还没有相关数据。
+
+3）sqlSession相同，在两次查询期间，执行了增删改操作，缓存失效。
+
+4）sqlSession相同，但是手动清空了一级缓存，缓存失效。
+
+二级缓存（全局缓存）需要进行配置，二级缓存是基于namespace级别的，一个namespace对应一个二级缓存。
+
+二级缓存工作机制：
+
+1）一个会话，查询一条数据，该数据会放在当前会话的一级缓存中。
+2）如果当前会话关闭，对应的一级缓存会被保存到二级缓存中，新的会话查询信息，就可以参照二级缓存。
+3）不同namespace查询出的数据会放在自己对应的缓存中。
+注意：查出的数据都会默认放在一级缓存中，只有会话提交或关闭后，一级缓存的数据才会被转移到二级缓存中。
+语法：
+1、#{}和${}
+（1）#{}是一个占位符，接收输入参数，参数类型可以是基本类型、POJO、HashMap
+（2）${}是一个拼接符号，可能导致sql注入，不建议使用。
+2、resultMap标签：
+（1）结果集映射的标签
+（2）resultMap：
+
+A、type：指定结果集中保存的实体类的类型
+B、id：resultMap标签的标识
+C、autoMapping：值范围true|false，设置是否启动自动映射功能。自动映射功能就是自动查找与字段名小写同名的属性名，并调用setter方法。设置为false之后，需要在resultMap内明确注明映射关系才会调用对应的setter方法。
+（3）id：用于设置主键字段与领域模型属性的映射关系
+（4）result：用于设置普通字段与领域模型属性的映射关系
+3、sql标签：用来封装sql语句或者sql片段
+
+MyBatis的DAO开发方法：
+1、 使用mapper代理方法：
+（1） 编写mapper.java 的接口类
+（2） 编写mapper.xml
+2、 编写接口类，需要遵守一些规范，MyBatis可以自动生成接口类的DAO实现类。规范有：
+（1） mapper.xml中namespace需要等于mapper接口类的地址
+（2） mapper接口类的方法的名称等于mapper.xml中statement（对应sql语句）的id
+（3） mapper接口类的输入参数类型等于mapper.xml中statement的parameterType指定的类型
+（4） mapper接口类的返回参数类型等于mapper.xml中statement的resultType指定的类型
+3、
+
+MyBatis和Hibernate的本质区别：
+1、 Hibernate不需要写sql，通过hql或者Hibernate直接生成sql。Mybatis需要写sql。
+2、 Mybatis适合于需求经常改动的项目，因为它的sql由程序员生成，容易改动。Hibernate适合于需求改动较少的项目。
+
+MyBatis和Ibatis的本质区别：
+1、MyBatis简化了编码过程，不需要写DAO的实现类。直接写一个DAO的接口和一个配置文件。MyBatis自动生成DAO实现类。
+
+嵌套查询 及 嵌套结果查询：
+嵌套查询：使用2次查询，然后在MyBatis（内存）中进行拼装。可能引起N+1问题。
+嵌套结果查询：使用1次查询，然后将结果进行拼装。
