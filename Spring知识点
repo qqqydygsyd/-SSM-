@@ -1,0 +1,12 @@
+Spring 在不同的场景中表示不同的含义。早期的时候它被用来指代Spring Framework项目本身，这也是它一开始的含义。随着时间的推移，在Spring Framework之上建立了其他Spring项目，比如SpringSecurity、SpringBoot、SpringCloud。大部分情况下，当人们聊到Spring时，他们所说的 Spring 是 Spring 整个家族。
+
+Spring 是一个轻量级的开源框架，是为解决企业应用开发的复杂性而创建的。而在我的理解中，Spring 的主要就解决了两件事情（当然它还解决了数据访问、远程调用、单元测试等问题），分别对应 Spring 的两个设计思想 IOC 和 AOP：
+
+IOC 容器（解耦合）：解决各种 new 对象的问题
+AOP （切面编程）：把非业务范畴的功能，提取成一个切面，统一实现
+@Scope 声明 Spring Bean 的作用域 ，四种常见的 Spring Bean 的作用域：
+
+singleton : 唯一 bean 实例，Spring 中的 bean 默认都是单例的。
+prototype : 每次请求都会创建一个新的 bean 实例。
+request : 每一次 HTTP 请求都会产生一个新的 bean，该 bean 仅在当前 HTTP request 内有效。
+session : 每一次 HTTP 请求都会产生一个新的 bean，该 bean 仅在当前 HTTP session 内有效
