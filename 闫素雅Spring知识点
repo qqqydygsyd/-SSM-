@@ -1,0 +1,151 @@
+1spring框架概述
+
+1.1什么是spring
+
+lSpring是一个开源框架，Spring是于2003 年兴起的一个轻量级的Java 开发框架，由Rod Johnson 在其著作Expert One-On-One J2EE Development and Design中阐述的部分理念和原型衍生而来。它是为了解决企业应用开发的复杂性而创建的。框架的主要优势之一就是其分层架构，分层架构允许使用者选择使用哪一个组件，同时为 J2EE 应用程序开发提供集成的框架。Spring使用基本的JavaBean来完成以前只可能由EJB完成的事情。然而，Spring的用途不仅限于服务器端的开发。从简单性、可测试性和松耦合的角度而言，任何Java应用都可以从Spring中受益。Spring的核心是控制反转（IoC）和面向切面（AOP）。简单来说，Spring是一个分层的JavaSE/EE full-stack(一站式) 轻量级开源框架。
+
+l轻量级：与EJB(enterprise javabean ,企业级javabean)对比，依赖资源少，销毁的资源少。
+
+l分层： 一站式，每一个层都提供的解决方案
+
+web层：struts，spring-MVC
+
+service层：spring
+
+dao层：hibernate，mybatis ， jdbcTemplate
+
+1.2spring由来
+
+lSpring 是java平台上的一个开源应用框架。它的第一个版本是由Rod Johnson写出来的。Rod在他的Expert One-On-One Java EE Design and Development(Java企业应用设计与开发的专家一对一)一书中首次发布了这个框架.
+
+1.3spring核心
+
+lSpring的核心是控制反转(IOC: inversion of control)和面向切面（AOP: aspect oriented program）
+
+1.4spring优点
+
+l方便解耦，简化开发(高内聚低耦合)
+
+•Spring就是一个大工厂(容器)，可以将所有对象创建和依赖关系维护，交给Spring管理
+
+•spring工厂是用于生成bean
+
+lAOP编程的支持
+
+•Spring提供面向切面编程，可以方便的实现对程序进行权限拦截、运行监控等功能
+
+l声明式事务的支持
+
+•只需要通过配置就可以完成对事务的管理，而无需手动编程
+
+l方便程序的测试
+
+•Spring对Junit4支持，可以通过注解方便的测试Spring程序
+
+l方便集成各种优秀框架
+
+•Spring不排斥各种优秀的开源框架，其内部提供了对各种优秀框架（如：Struts、Hibernate、MyBatis、Quartz等）的直接支持
+
+l降低JavaEE API的使用难度
+
+•Spring 对JavaEE开发中非常难用的一些API（JDBC、JavaMail、远程调用等），都提供了封装，使这些API应用难度大大降低
+
+1.5spring体系结构
+
+Spring框架整体被分为五个模块:核心容器(core container), 面向切面编程(aop), 数据访问(date access), web, test.
+
+Spring4去掉了spring3中的struts,添加了messaging和websocket,其他模块保持不变
+
+Spring的jar包大约20个,每个都有相应的功能,一个jar还可能依赖了若干其他jar,所以搞清楚它们之间的关系,配置maven依赖就可以简洁明了.
+
+1.5.1 core
+
+core部分包含4个模块
+
+spring-core：依赖注入IoC与DI的最基本实现
+
+spring-beans：Bean工厂与bean的装配
+
+spring-context：spring的context上下文即IoC容器
+
+spring-expression：spring表达式语言
+
+它们的完整依赖关系
+
+因为spring-core依赖了commons-logging，而其他模块都依赖了spring-core，所以整个spring框架都依赖了commons-logging，如果有自己的日志实现如log4j，可以排除对commons-logging的依赖，没有日志实现而排除了commons-logging依赖，编译报错
+
+1.5.2 aop
+
+aop部分包含4个模块
+
+spring-aop：面向切面编程
+
+spring-aspects：集成AspectJ
+
+spring-instrument：提供一些类级的工具支持和ClassLoader级的实现，用于服务器
+
+spring-instrument-tomcat：针对tomcat的instrument实现(包含了spring的tomcat设备代理)
+
+它们的完整依赖关系
+
+1.5.3 data access
+
+data access部分包含5个模块
+
+spring-jdbc：jdbc的支持
+
+spring-tx：事务控制
+
+spring-orm：对象关系映射，集成orm框架
+
+spring-oxm：对象xml映射
+
+spring-jms：java消息服务
+
+它们的完整依赖关系
+
+1.5.4 web
+
+web包含4个模块
+
+spring-web：基础web功能，如文件上传
+
+spring-webmvc：mvc实现
+
+spring-webmvc-portlet：基于portlet的mvc实现
+
+spring-websocket：为web应用提供的高效通信工具
+
+它们的依赖关系
+
+1.5.5 test
+
+test部分只有一个模块，我将spring-context-support也放在这里
+
+spring-test：spring测试，提供junit与mock测试功能
+
+spring-context-support：spring额外支持包，比如邮件服务、视图解析等
+
+它们的依赖关系
+
+1.5.6 spring4新增
+
+Spring4去掉了spring3中的struts,添加了messaging和websocket,其他模块保持不变.
+
+spring-websocket：为web应用提供的高效通信工具
+
+spring-messaging：用于构建基于消息的应用程序
+
+它们的依赖关系
+Spring 在不同的场景中表示不同的含义。早期的时候它被用来指代Spring Framework项目本身，这也是它一开始的含义。随着时间的推移，在Spring Framework之上建立了其他Spring项目，比如SpringSecurity、SpringBoot、SpringCloud。大部分情况下，当人们聊到Spring时，他们所说的 Spring 是 Spring 整个家族。
+
+Spring 是一个轻量级的开源框架，是为解决企业应用开发的复杂性而创建的。而在我的理解中，Spring 的主要就解决了两件事情（当然它还解决了数据访问、远程调用、单元测试等问题），分别对应 Spring 的两个设计思想 IOC 和 AOP：
+
+IOC 容器（解耦合）：解决各种 new 对象的问题
+AOP （切面编程）：把非业务范畴的功能，提取成一个切面，统一实现
+@Scope 声明 Spring Bean 的作用域 ，四种常见的 Spring Bean 的作用域：
+
+singleton : 唯一 bean 实例，Spring 中的 bean 默认都是单例的。
+prototype : 每次请求都会创建一个新的 bean 实例。
+request : 每一次 HTTP 请求都会产生一个新的 bean，该 bean 仅在当前 HTTP request 内有效。
+session : 每一次 HTTP 请求都会产生一个新的 bean，该 bean 仅在当前 HTTP session 内有效
